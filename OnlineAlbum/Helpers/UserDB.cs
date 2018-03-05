@@ -15,6 +15,7 @@ namespace OnlineAlbum.Helpers
         private SqlCommand m_searchCmd;
         private SqlCommand m_insertCmd;
         private SqlCommand m_checkUserAndPasswordCmd;
+        private SqlCommand m_getNickNameCmd;
 
         /*!
             \brief 创建SqlCommand
@@ -32,6 +33,9 @@ namespace OnlineAlbum.Helpers
             m_checkUserAndPasswordCmd = new SqlCommand("SELECT count(*) FROM UserTable WHERE USER_ID = @userID AND PASSWORD = @password", m_connection);
             m_checkUserAndPasswordCmd.Parameters.Add("@userID", SqlDbType.Char);
             m_checkUserAndPasswordCmd.Parameters.Add("@password", SqlDbType.Char);
+
+            m_getNickNameCmd = new SqlCommand("SELECT USER_NAME FROM UserTable WHERE USER_ID = @userID", m_connection);
+            m_getNickNameCmd.Parameters.Add("@userID", SqlDbType.Char);
         }
 
         /*!
@@ -134,6 +138,53 @@ namespace OnlineAlbum.Helpers
             }
 
             return success;
+        }
+
+        /*!
+            \brief 获取某个用户的昵称
+            \param userID 用户的唯一标识ID。
+            如果用户不存在将会抛出异常。
+        */
+        public string GetNickNameOf(string userID)
+        {
+            string nickName = "";
+            bool success = false;
+
+            try
+            {
+                m_connection.Open();
+                m_getNickNameCmd.Parameters["@userID"].Value = userID;
+
+                SqlDataReader searchResult = m_getNickNameCmd.ExecuteReader();
+
+                if (searchResult.Read())
+                {
+                    nickName = searchResult["USER_NAME"].ToString();
+                    success = true;
+                }
+                else
+                {
+                    success = false;
+                }
+                
+            }
+            catch (SqlException ex)
+            {
+                success = false;
+            }
+            finally
+            {
+                m_connection.Close();
+            }
+
+            if (success)
+            {
+                return nickName;
+            }
+            else
+            {
+                throw new Exception("无法读取用户昵称");
+            }
         }
     }
 }
