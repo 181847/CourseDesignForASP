@@ -23,6 +23,7 @@
                 </td>
                 <td>
                     <asp:TextBox ID="userNameText" runat="server"></asp:TextBox>
+                    <asp:RequiredFieldValidator runat="server" ErrorMessage="用户名必填" ForeColor="Red" ControlToValidate="userNameText" />
                     <asp:CustomValidator ID="userNameValidator" runat="server" ControlToValidate="userNameText" OnServerValidate="userNameValidator_ServerValidate" ForeColor="Red"/>
                 </td>
             </tr>
@@ -32,6 +33,7 @@
                 </td>
                 <td class="auto-style1">
                     <asp:TextBox ID="passwordText" runat="server"></asp:TextBox>
+                    <asp:RequiredFieldValidator runat="server" ErrorMessage="密码必填" ForeColor="Red" ControlToValidate="passwordText" />
                     <asp:RegularExpressionValidator ID="passwordValidator" ValidationExpression="[a-zA-Z0-9]{6,12}" runat="server" ControlToValidate="passwordText" ErrorMessage="密码格式错误" ForeColor="Red"/>
                 </td>
             </tr>
@@ -51,7 +53,7 @@
                     <asp:Button ID="RegisterConfirmBtn" runat="server" Text="确认注册" OnClick="RegisterConfirmBtn_Click"/>
                 </td>
                 <td>
-                    <asp:Button ID="GoToLoginBtn" runat="server" Text="我已有账号，直接登陆" />
+                    <asp:Button ID="GoToLoginBtn" runat="server" Text="我已有账号，直接登陆" OnClick="GoToLoginBtn_Click" CausesValidation="false"/>
                 </td>
             </tr>
         </table>

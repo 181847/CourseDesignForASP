@@ -28,7 +28,7 @@ namespace OnlineAlbum
             string userID = userNameText.Text;
 
             // 用户名格式检查
-            if ( ! userValidateRx.IsMatch(userID))
+            if ( userID == "" || ( ! userValidateRx.IsMatch(userID)) )
             {
                 args.IsValid = false;
                 userNameValidator.ErrorMessage = "用户名格式错误";
@@ -61,6 +61,11 @@ namespace OnlineAlbum
                     Response.Write("注册失败<br>");
                 }
             }
+        }
+
+        protected void GoToLoginBtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~\\Login.aspx");
         }
     }
 }
