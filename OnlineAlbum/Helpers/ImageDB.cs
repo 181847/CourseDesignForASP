@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
@@ -7,6 +9,32 @@ namespace OnlineAlbum.Helpers
 {
     public class ImageDB: BaseDataBase
     {
+        /*!
+            \brief GUID字符串的格式化方法。
+        */
+        private const string GUID_STRING_FORMAT = "N";
+
+        protected SqlCommand m_addCmd;
+        protected SqlCommand m_renameCmd;
+        protected SqlCommand m_deleteCmd;
+
+        protected override void BuildSqlCmds()
+        {
+            m_addCmd = new SqlCommand("INTER INTO ImageTable VALUE(@id, @userID, @name)", m_connection);
+            m_addCmd.Parameters.Add("@id", SqlDbType.Char);
+            m_addCmd.Parameters.Add("@userID", SqlDbType.Char);
+            m_addCmd.Parameters.Add("@name", SqlDbType.NChar);
+
+
+            m_addCmd = new SqlCommand("UPDATE ImageTable SET NAME = @name WHERE ID = @id AND USER_ID = @userID", m_connection);
+            m_addCmd.Parameters.Add("@id", SqlDbType.Char);
+            m_addCmd.Parameters.Add("@userID", SqlDbType.Char);
+            m_addCmd.Parameters.Add("@name", SqlDbType.NChar);
+
+            m_deleteCmd = new SqlCommand("DELETE FROM ImageTable WHERE ID = @id AND USER_ID = @userID", m_connection);
+            m_addCmd.Parameters.Add("@id", SqlDbType.Char);
+            m_addCmd.Parameters.Add("@userID", SqlDbType.Char);
+        }
 
         /*!
             \brief 生成随机GUID，生成的序列号几乎不会有重复的
@@ -14,7 +42,8 @@ namespace OnlineAlbum.Helpers
         */
         public string GenerateImgID()
         {
-            return "ERROR";
+            Guid newGuid = Guid.NewGuid();
+            return newGuid.ToString(GUID_STRING_FORMAT);
         }
 
         /*!
@@ -26,7 +55,32 @@ namespace OnlineAlbum.Helpers
         */
         public bool AddTo(string imgID, string userID, string imgName)
         {
-            return false;
+            bool success = false;
+
+            try
+            {
+                m_connection.Open();
+                m_addCmd.Parameters["@userID"].Value = userID;
+                m_addCmd.Parameters["@id"].Value = imgID;
+                m_addCmd.Parameters["@name"].Value = imgName;
+
+                int count = m_addCmd.ExecuteNonQuery();
+
+                if (count == 1)
+                {
+                    success = true;
+                }
+            }
+            catch (SqlException ex)
+            {
+                success = false;
+            }
+            finally
+            {
+                m_connection.Close();
+            }
+
+            return success;
         }
 
         /*!
@@ -38,7 +92,32 @@ namespace OnlineAlbum.Helpers
         */
         public bool Rename(string imgID, string userID, string newName)
         {
-            return false;
+            bool success = false;
+
+            try
+            {
+                m_connection.Open();
+                m_addCmd.Parameters["@userID"].Value = userID;
+                m_addCmd.Parameters["@id"].Value = imgID;
+                m_addCmd.Parameters["@name"].Value = newName;
+
+                int count = m_addCmd.ExecuteNonQuery();
+
+                if (count == 1)
+                {
+                    success = true;
+                }
+            }
+            catch (SqlException ex)
+            {
+                success = false;
+            }
+            finally
+            {
+                m_connection.Close();
+            }
+
+            return success;
         }
 
         /*!
@@ -49,7 +128,31 @@ namespace OnlineAlbum.Helpers
         */
         public bool Delete(string imgID, string userID)
         {
-            return false;
+            bool success = false;
+
+            try
+            {
+                m_connection.Open();
+                m_addCmd.Parameters["@userID"].Value = userID;
+                m_addCmd.Parameters["@id"].Value = imgID;
+
+                int count = m_addCmd.ExecuteNonQuery();
+
+                if (count == 1)
+                {
+                    success = true;
+                }
+            }
+            catch (SqlException ex)
+            {
+                success = false;
+            }
+            finally
+            {
+                m_connection.Close();
+            }
+
+            return success;
         }
     }
 }
