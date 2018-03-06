@@ -1,4 +1,5 @@
 ﻿using OnlineAlbum.Helpers;
+using OnlineAlbum.UserControl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,13 @@ namespace OnlineAlbum
         protected string m_userID;
         protected string m_userName;
         protected static UserDB m_userDB = new UserDB();
+        protected static ImageDB m_imgDB = new ImageDB();
+        protected List<ServerImage> m_tempImgList;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             m_userID = Session["userID"].ToString();
-            m_userName = m_userDB.GetNickNameOf(m_userID);
+            m_userName = Session["userName"].ToString();
 
             wellcomeUserLbl.Text = "欢迎您" + m_userID + "/" + m_userName;
             
@@ -34,7 +37,22 @@ namespace OnlineAlbum
         */
         protected void ReadImages()
         {
+            m_tempImgList = m_imgDB.GetOneUsersImgs(m_userID);
 
+            foreach ( var serverImg in m_tempImgList)
+            {
+                userImgPan.Controls.Add(serverImg.ToWebImage(Page));
+            }
+        }
+
+        protected void UploadImgBtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~\\UploadImage.aspx");
+        }
+
+        protected void goToMainPageBtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("~\\GlobalAlbum.aspx");
         }
     }
 }

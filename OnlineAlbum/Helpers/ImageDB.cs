@@ -17,23 +17,30 @@ namespace OnlineAlbum.Helpers
         protected SqlCommand m_addCmd;
         protected SqlCommand m_renameCmd;
         protected SqlCommand m_deleteCmd;
+        protected SqlCommand m_findUserImgsCmd;
+        protected SqlCommand m_findAllImgsCmd;
 
         protected override void BuildSqlCmds()
         {
-            m_addCmd = new SqlCommand("INTER INTO ImageTable VALUE(@id, @userID, @name)", m_connection);
+            m_addCmd = new SqlCommand("INSERT INTO ImageTable VALUES (@id, @userID, @name)", m_connection);
             m_addCmd.Parameters.Add("@id", SqlDbType.Char);
             m_addCmd.Parameters.Add("@userID", SqlDbType.Char);
             m_addCmd.Parameters.Add("@name", SqlDbType.NChar);
 
 
-            m_addCmd = new SqlCommand("UPDATE ImageTable SET NAME = @name WHERE ID = @id AND USER_ID = @userID", m_connection);
-            m_addCmd.Parameters.Add("@id", SqlDbType.Char);
-            m_addCmd.Parameters.Add("@userID", SqlDbType.Char);
-            m_addCmd.Parameters.Add("@name", SqlDbType.NChar);
+            m_renameCmd = new SqlCommand("UPDATE ImageTable SET NAME = @name WHERE ID = @id AND USER_ID = @userID", m_connection);
+            m_renameCmd.Parameters.Add("@id", SqlDbType.Char);
+            m_renameCmd.Parameters.Add("@userID", SqlDbType.Char);
+            m_renameCmd.Parameters.Add("@name", SqlDbType.NChar);
 
             m_deleteCmd = new SqlCommand("DELETE FROM ImageTable WHERE ID = @id AND USER_ID = @userID", m_connection);
-            m_addCmd.Parameters.Add("@id", SqlDbType.Char);
-            m_addCmd.Parameters.Add("@userID", SqlDbType.Char);
+            m_deleteCmd.Parameters.Add("@id", SqlDbType.Char);
+            m_deleteCmd.Parameters.Add("@userID", SqlDbType.Char);
+
+            m_findUserImgsCmd = new SqlCommand("SELECT * FROM ImageTable WHERE USER_ID = @userID", m_connection);
+            m_findUserImgsCmd.Parameters.Add("@userID", SqlDbType.Char);
+
+            m_findAllImgsCmd = new SqlCommand("SELECT * FROM ImageTable", m_connection);
         }
 
         /*!
@@ -97,11 +104,11 @@ namespace OnlineAlbum.Helpers
             try
             {
                 m_connection.Open();
-                m_addCmd.Parameters["@userID"].Value = userID;
-                m_addCmd.Parameters["@id"].Value = imgID;
-                m_addCmd.Parameters["@name"].Value = newName;
+                m_renameCmd.Parameters["@userID"].Value = userID;
+                m_renameCmd.Parameters["@id"].Value = imgID;
+                m_renameCmd.Parameters["@name"].Value = newName;
 
-                int count = m_addCmd.ExecuteNonQuery();
+                int count = m_renameCmd.ExecuteNonQuery();
 
                 if (count == 1)
                 {
@@ -133,10 +140,10 @@ namespace OnlineAlbum.Helpers
             try
             {
                 m_connection.Open();
-                m_addCmd.Parameters["@userID"].Value = userID;
-                m_addCmd.Parameters["@id"].Value = imgID;
+                m_deleteCmd.Parameters["@userID"].Value = userID;
+                m_deleteCmd.Parameters["@id"].Value = imgID;
 
-                int count = m_addCmd.ExecuteNonQuery();
+                int count = m_deleteCmd.ExecuteNonQuery();
 
                 if (count == 1)
                 {
@@ -153,6 +160,74 @@ namespace OnlineAlbum.Helpers
             }
 
             return success;
+        }
+
+        /*!
+            \brief 获取某一个用户的所有图片信息。 
+        */
+        public List<ServerImage> GetOneUsersImgs(string userID)
+        {
+            List<ServerImage> imgList = new List<ServerImage>();
+
+            try
+            {
+                m_connection.Open();
+                m_findUserImgsCmd.Parameters["@userID"].Value = userID;
+
+                SqlDataReader dr = m_findUserImgsCmd.ExecuteReader();
+
+                while(dr.Read())
+                {
+                    imgList.Add(new ServerImage(
+                        dr["ID"].ToString(), 
+                        dr["NAME"].ToString(), 
+                        dr["USER_ID"].ToString()));
+                }
+            }
+            catch(SqlException ex)
+            {
+                throw new Exception("读取用户的图片时出错");
+            }
+            finally
+            {
+                m_connection.Close();
+            }
+
+            return imgList;
+        }
+
+        /*!
+            \brief 获取所有用户的所有图像
+             
+        */
+        public List<ServerImage> GetAllUsersImgs()
+        {
+            List<ServerImage> imgList = new List<ServerImage>();
+
+            try
+            {
+                m_connection.Open();
+
+                SqlDataReader dr = m_findAllImgsCmd.ExecuteReader();
+
+                while (dr.Read())
+                {
+                    imgList.Add(new ServerImage(
+                        dr["ID"].ToString(),
+                        dr["NAME"].ToString(),
+                        dr["USER_ID"].ToString()));
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("读取用户的图片时出错");
+            }
+            finally
+            {
+                m_connection.Close();
+            }
+
+            return imgList;
         }
     }
 }

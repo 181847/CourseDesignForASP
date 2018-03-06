@@ -13,9 +13,9 @@
     <form id="form1" runat="server">
     <div>
         <asp:Label ID="wellcomeUserLbl" runat="server" />
-        <asp:Panel ID="userImgPan" runat="server" />
-        <asp:Button ID="goToMainPageBtn" runat="server" Text="转到主页" />
-        <asp:Button ID="UploadImgBtn" runat="server" Text="上传新图像" />
+        <asp:Panel ID="userImgPan" runat="server" CssClass="waterfall"/>
+        <asp:Button ID="goToMainPageBtn" runat="server" Text="转到主页" OnClick="goToMainPageBtn_Click"/>
+        <asp:Button ID="UploadImgBtn" runat="server" Text="上传新图像" OnClick="UploadImgBtn_Click"/>
     </div>
     </form>
 </body>

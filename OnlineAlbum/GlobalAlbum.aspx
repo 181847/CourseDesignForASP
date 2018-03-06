@@ -10,8 +10,12 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <asp:PlaceHolder ID="PictureHolder" runat="server" />
-        <asp:Image runat="server" ImageAlign="TextTop" BorderStyle="Double"/>
+        <p>欢迎光临本站</p>
+        <div>
+            <asp:Label ID="userTitle" runat="server" ></asp:Label>
+            <asp:Button ID="goToPersonPageBtn" runat="server" OnClick="goToPersonPageBtn_Click"/> 
+        </div>
+        <asp:Panel ID="allUserImgPan" runat="server" />
     </div>
     </form>
 </body>

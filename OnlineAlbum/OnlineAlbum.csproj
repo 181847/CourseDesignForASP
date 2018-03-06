@@ -113,6 +113,7 @@
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="UploadImage.aspx" />
+    <Content Include="UserControl\SingleImageOverView.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +125,7 @@
       <DependentUpon>GlobalAlbum.aspx</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BaseDataBase.cs" />
+    <Compile Include="Helpers\ServerImage.cs" />
     <Compile Include="Helpers\ImageDB.cs" />
     <Compile Include="Helpers\ImagePath.cs" />
     <Compile Include="Helpers\UserDB.cs" />
@@ -156,9 +158,17 @@
     <Compile Include="UploadImage.aspx.designer.cs">
       <DependentUpon>UploadImage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="UserControl\SingleImageOverView.ascx.cs">
+      <DependentUpon>SingleImageOverView.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\SingleImageOverView.ascx.designer.cs">
+      <DependentUpon>SingleImageOverView.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\Administrator\" />
+    <Folder Include="Images\UserData\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

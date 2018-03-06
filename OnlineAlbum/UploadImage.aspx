@@ -20,7 +20,7 @@
             </tr>
             <tr>
                 <td>
-                    <asp:FileUpload ID="imgFileUploadBtn" runat="server" OnUnload="imgFileUploadBtn_Unload"/>
+                    <asp:FileUpload ID="imgFileUploadBtn" runat="server" />
                 </td>
             </tr>
             <tr>
@@ -32,12 +32,12 @@
                 <td>
                     重命名：
                     <asp:TextBox ID="renameImgTextBox" runat="server" />
-                    <asp:RequiredFieldValidator runat="server" ControlToValidate="renameImgTextBox" ErrorMessage="图像名字不能为空" ForeColor="Red"/>
+                    <%--<asp:RequiredFieldValidator runat="server" ControlToValidate="renameImgTextBox" ErrorMessage="图像名字不能为空" ForeColor="Red"/>--%>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <asp:Button ID="confirmUpload" runat="server" />
+                    <asp:Button ID="confirmUpload" runat="server" Text="确认上传，完成后返回个人页面" OnClick="confirmUpload_Click"/>
                 </td>
             </tr>
         </table>

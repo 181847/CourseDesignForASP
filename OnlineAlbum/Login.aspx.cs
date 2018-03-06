@@ -57,6 +57,7 @@ namespace OnlineAlbum
             if (Page.IsValid)
             {
                 Session["userID"] = userIDText.Text;
+                Session["userName"] = m_userDB.GetNickNameOf(userIDText.Text);
                 Response.Redirect("~\\PersonalPage.aspx");
             }
             else

@@ -35,6 +35,5 @@ namespace OnlineAlbum.Helpers
 
             return "~\\Images\\Administrator\\" + imageNum + ".jpg";
         }
-
     }
 }
