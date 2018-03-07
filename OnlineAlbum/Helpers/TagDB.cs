@@ -30,10 +30,10 @@ namespace OnlineAlbum.Helpers
             m_addCmd.Parameters.Add("@id", SqlDbType.Char);
             m_addCmd.Parameters.Add("@name", SqlDbType.NChar);
 
-            m_getNameCmd = new SqlCommand("SELECT NAME FROM TagTable WHERE ID = @id", m_connection);
+            m_getNameCmd = new SqlCommand("SELECT TAG_NAME FROM TagTable WHERE TAG_ID = @id", m_connection);
             m_getNameCmd.Parameters.Add("@id", SqlDbType.Char);
 
-            m_getIDCmd = new SqlCommand("SELECT ID FROM TagTable WHERE NAME = @name", m_connection);;
+            m_getIDCmd = new SqlCommand("SELECT TAG_ID FROM TagTable WHERE TAG_NAME = @name", m_connection);;
             m_getIDCmd.Parameters.Add("@name", SqlDbType.NChar);
         }
 
@@ -47,51 +47,54 @@ namespace OnlineAlbum.Helpers
         }
 
         /*!
-            \brief 向数据库中添加一个新的Tag
+            \brief 尝试向数据库中添加一个新的Tag
             \param tagName 标签名
-            如果已经存在同名Tag就直接返回false。
-            系统自动生成标签ID。
+            如果失败或者存在同名Tag，返回null，如果成功返回新标签的ID。
         */
-        public bool AddTag(string tagName)
+        public string TryAddTag(string tagName)
         {
-            bool success = false;
-
-            if (AlreadyHave(tagName))
+            string itsTagID = GetTagID(tagName);
+            if (itsTagID != null)
             {
-                // 已经包含同名标签。
-                return false;
+                // 已经包含同名标签，添加失败。
+                return null;
+            }
+            else
+            {
+                itsTagID = GenerateTagID();
             }
 
             try
             {
                 m_connection.Open();
-                m_addCmd.Parameters["@id"].Value = GenerateTagID();
+                m_addCmd.Parameters["@id"].Value = itsTagID;
                 m_addCmd.Parameters["@name"].Value = tagName;
 
                 int count = m_addCmd.ExecuteNonQuery();
 
-                if (count == 1)
+                if (count != 1)
                 {
-                    success = true;
+                    // 如果插入失败 强制把返回值ID设为null。
+                    itsTagID = null;
                 }
             }
             catch (SqlException ex)
             {
-                success = false;
+                itsTagID = null;
             }
             finally
             {
                 m_connection.Close();
             }
 
-            return success;
+            return itsTagID;
         }
 
         /*
-            \brief 后去某个tagID对应的标签名。
+            \brief 获取某个tagID对应的标签名。
             \param tagID 标签ID 
         */
-        public string GetName(string tagID)
+        public string GetTagName(string tagID)
         {
             string name = null;
 
@@ -100,7 +103,7 @@ namespace OnlineAlbum.Helpers
                 m_connection.Open();
                 m_getNameCmd.Parameters["@id"].Value = tagID;
 
-                object shouldBeTheName = m_getNameCmd.ExecuteNonQuery();
+                object shouldBeTheName = m_getNameCmd.ExecuteScalar();
 
                 if (shouldBeTheName != null)
                 {
@@ -124,10 +127,10 @@ namespace OnlineAlbum.Helpers
         }
 
         /*!
-            \brief 获取某个标签名的ID
+            \brief 获取某个标签名对应的ID
             \param tagName 标签的名字。 
         */
-        public String GetTagId(string tagName)
+        public String GetTagID(string tagName)
         {
             string id = null;
 
@@ -136,7 +139,7 @@ namespace OnlineAlbum.Helpers
                 m_connection.Open();
                 m_getIDCmd.Parameters["@name"].Value = tagName;
 
-                object shouldBeTheID = m_getIDCmd.ExecuteNonQuery();
+                object shouldBeTheID = m_getIDCmd.ExecuteScalar();
 
                 if (shouldBeTheID != null)
                 {
@@ -162,19 +165,38 @@ namespace OnlineAlbum.Helpers
         /*!
             \brief 检查数据库中是否已经存在同名标签。 
         */
-        public bool AlreadyHave(string tagName)
+        public bool AlreadyHaveName(string tagName)
         {
             // 尝试从标签名获取标签ID
-            if (GetTagId(tagName) == null)
+            if (GetTagID(tagName) == null)
             {
-                // 标签为null，说明没有同名标签。
+                // 标签ID为null，说明没有同名标签。
                 return false;
             }
             else
             {
-                // 标签不为null， 说明已存在同名标签。
+                // 标签ID不为null， 说明已存在同名标签。
                 return true;
             }
         }
+        
+        /*!
+            \brief 检查数据库中是否已经存在这个标签ID的标签。 
+        */
+        public bool AlreadyHaveID(string tagID)
+        {
+            // 尝试从标签ID获取标签名
+            if (GetTagName(tagID) == null)
+            {
+                // 标签名为null，说明没有这个ID。
+                return false;
+            }
+            else
+            {
+                // 标签名不为null， 说明已存在这个ID。
+                return true;
+            }
+        }
+
     }
 }

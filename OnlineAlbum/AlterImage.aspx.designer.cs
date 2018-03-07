@@ -67,13 +67,13 @@ namespace OnlineAlbum {
         protected global::System.Web.UI.WebControls.FileUpload replaceImgUpload;
         
         /// <summary>
-        /// replaceImgLackLbl 控件。
+        /// requireReplaceImgFileUploadValidator 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label replaceImgLackLbl;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator requireReplaceImgFileUploadValidator;
         
         /// <summary>
         /// renameText 控件。
@@ -128,5 +128,41 @@ namespace OnlineAlbum {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button returnToMainPageBtn;
+        
+        /// <summary>
+        /// tagList 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListBox tagList;
+        
+        /// <summary>
+        /// addTagText 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox addTagText;
+        
+        /// <summary>
+        /// addTagBtn 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button addTagBtn;
+        
+        /// <summary>
+        /// deleteTagBtn 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button deleteTagBtn;
     }
 }

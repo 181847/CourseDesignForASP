@@ -27,10 +27,14 @@ namespace OnlineAlbum
         {
             var imgList = m_imgDB.GetAllUsersImgs();
 
-            foreach (var img in imgList)
-            {
-                allUserImgPan.Controls.Add(img.ToWebImage(Page));
-            }
+            allUserImgPan.Controls.Clear();    // 清空现在userImgPan中的控件
+
+            // 创建新的标签分类控件。
+            ImageSortPanel newImgSortPanel = (ImageSortPanel)Page.LoadControl("~\\UserControl\\ImageSortPanel.ascx");
+
+            newImgSortPanel.SetImgs(imgList);     // 向分类面板添加所有图像
+
+            allUserImgPan.Controls.Add(newImgSortPanel);   // 将分类面板添加到userImgPan中
         }
 
         /*!

@@ -7,40 +7,48 @@ using System.Web;
 
 namespace OnlineAlbum.Helpers
 {
+    /*!
+        \brief 图片信息数据库 
+    */
     public class ImageDB: BaseDataBase
     {
         /*!
-            \brief GUID字符串的格式化方法。
+            \brief GUID字符串的格式，参考 https://docs.microsoft.com/zh-cn/dotnet/api/system.guid.tostring?view=netcore-2.0#System_Guid_ToString_System_String_
         */
         private const string GUID_STRING_FORMAT = "N";
-
+        
         protected SqlCommand m_addCmd;
         protected SqlCommand m_renameCmd;
         protected SqlCommand m_deleteCmd;
         protected SqlCommand m_findUserImgsCmd;
         protected SqlCommand m_findAllImgsCmd;
+        protected SqlCommand m_existOneImgCmd;
 
         protected override void BuildSqlCmds()
         {
-            m_addCmd = new SqlCommand("INSERT INTO ImageTable VALUES (@id, @userID, @name)", m_connection);
-            m_addCmd.Parameters.Add("@id", SqlDbType.Char);
+            m_addCmd = new SqlCommand("INSERT INTO ImageTable VALUES (@imgID, @userID, @imgName)", m_connection);
+            m_addCmd.Parameters.Add("@imgID", SqlDbType.Char);
             m_addCmd.Parameters.Add("@userID", SqlDbType.Char);
-            m_addCmd.Parameters.Add("@name", SqlDbType.NChar);
+            m_addCmd.Parameters.Add("@imgName", SqlDbType.NChar);
 
 
-            m_renameCmd = new SqlCommand("UPDATE ImageTable SET NAME = @name WHERE ID = @id AND USER_ID = @userID", m_connection);
-            m_renameCmd.Parameters.Add("@id", SqlDbType.Char);
+            m_renameCmd = new SqlCommand("UPDATE ImageTable SET IMG_NAME = @imgName WHERE IMG_ID = @imgID AND USER_ID = @userID", m_connection);
+            m_renameCmd.Parameters.Add("@imgID", SqlDbType.Char);
             m_renameCmd.Parameters.Add("@userID", SqlDbType.Char);
-            m_renameCmd.Parameters.Add("@name", SqlDbType.NChar);
+            m_renameCmd.Parameters.Add("@imgName", SqlDbType.NChar);
 
-            m_deleteCmd = new SqlCommand("DELETE FROM ImageTable WHERE ID = @id AND USER_ID = @userID", m_connection);
-            m_deleteCmd.Parameters.Add("@id", SqlDbType.Char);
+            m_deleteCmd = new SqlCommand("DELETE FROM ImageTable WHERE IMG_ID = @imgID AND USER_ID = @userID", m_connection);
+            m_deleteCmd.Parameters.Add("@imgID", SqlDbType.Char);
             m_deleteCmd.Parameters.Add("@userID", SqlDbType.Char);
 
             m_findUserImgsCmd = new SqlCommand("SELECT * FROM ImageTable WHERE USER_ID = @userID", m_connection);
             m_findUserImgsCmd.Parameters.Add("@userID", SqlDbType.Char);
 
             m_findAllImgsCmd = new SqlCommand("SELECT * FROM ImageTable", m_connection);
+
+            m_existOneImgCmd = new SqlCommand("SELECT count(*) FROM ImageTable WHERE IMG_ID = @imgID and USER_ID = @userID", m_connection);
+            m_existOneImgCmd.Parameters.Add("@imgID", SqlDbType.Char);
+            m_existOneImgCmd.Parameters.Add("@userID", SqlDbType.Char);
         }
 
         /*!
@@ -55,7 +63,7 @@ namespace OnlineAlbum.Helpers
 
         /*!
             \brief 在数据库中记录这个图像文件的信息
-            \param imgID 随机GUID，每个图像的ID都不相同，而且一经记录就不再更改
+            \param imgID 图像的ID，同时也是这个图像的文件名，形如“2f0be454d467440e8916f208d7d5ad19.jpg”，有扩展名。
             \param userID 添加到这个用户的图库中
             \param imgName 给这个图像起一个名字
             返回是否成功。
@@ -68,8 +76,8 @@ namespace OnlineAlbum.Helpers
             {
                 m_connection.Open();
                 m_addCmd.Parameters["@userID"].Value = userID;
-                m_addCmd.Parameters["@id"].Value = imgID;
-                m_addCmd.Parameters["@name"].Value = imgName;
+                m_addCmd.Parameters["@imgID"].Value = imgID;
+                m_addCmd.Parameters["@imgName"].Value = imgName;
 
                 int count = m_addCmd.ExecuteNonQuery();
 
@@ -92,8 +100,8 @@ namespace OnlineAlbum.Helpers
 
         /*!
             \brief 重命名一个用户的某个图像
-            \param imgID 随机GUID，每个图像的ID都不相同，而且一经记录就不再更改
-            \param userID 添加到这个用户的图库中
+            \param imgID 被修改的图像ID
+            \param userID 包含这个图像的用户ID
             \param newName 新名字
             返回是否成功。
         */
@@ -105,8 +113,8 @@ namespace OnlineAlbum.Helpers
             {
                 m_connection.Open();
                 m_renameCmd.Parameters["@userID"].Value = userID;
-                m_renameCmd.Parameters["@id"].Value = imgID;
-                m_renameCmd.Parameters["@name"].Value = newName;
+                m_renameCmd.Parameters["@imgID"].Value = imgID;
+                m_renameCmd.Parameters["@imgName"].Value = newName;
 
                 int count = m_renameCmd.ExecuteNonQuery();
 
@@ -141,7 +149,7 @@ namespace OnlineAlbum.Helpers
             {
                 m_connection.Open();
                 m_deleteCmd.Parameters["@userID"].Value = userID;
-                m_deleteCmd.Parameters["@id"].Value = imgID;
+                m_deleteCmd.Parameters["@imgID"].Value = imgID;
 
                 int count = m_deleteCmd.ExecuteNonQuery();
 
@@ -163,7 +171,8 @@ namespace OnlineAlbum.Helpers
         }
 
         /*!
-            \brief 获取某一个用户的所有图片信息。 
+            \brief 获取某一个用户的所有图片信息，图片信息内部包括图片ID、图片名、所属的用户ID，
+            图片信息的结构参考“~\Helpers\ServerImage.cs”
         */
         public List<ServerImage> GetOneUsersImgs(string userID)
         {
@@ -179,10 +188,12 @@ namespace OnlineAlbum.Helpers
                 while(dr.Read())
                 {
                     imgList.Add(new ServerImage(
-                        dr["ID"].ToString(), 
-                        dr["NAME"].ToString(), 
+                        dr["IMG_ID"].ToString(), 
+                        dr["IMG_NAME"].ToString(), 
                         dr["USER_ID"].ToString()));
                 }
+
+                dr.Close();
             }
             catch(SqlException ex)
             {
@@ -198,7 +209,6 @@ namespace OnlineAlbum.Helpers
 
         /*!
             \brief 获取所有用户的所有图像
-             
         */
         public List<ServerImage> GetAllUsersImgs()
         {
@@ -213,10 +223,12 @@ namespace OnlineAlbum.Helpers
                 while (dr.Read())
                 {
                     imgList.Add(new ServerImage(
-                        dr["ID"].ToString(),
-                        dr["NAME"].ToString(),
+                        dr["IMG_ID"].ToString(),
+                        dr["IMG_NAME"].ToString(),
                         dr["USER_ID"].ToString()));
                 }
+
+                dr.Close();
             }
             catch (SqlException ex)
             {
@@ -229,5 +241,38 @@ namespace OnlineAlbum.Helpers
 
             return imgList;
         }
+
+        /*!
+            \brief 检查某个用户是否拥有这张图片。
+        */
+        public bool ExistImg(string imgID, string userID)
+        {
+            bool success = false;
+
+            try
+            {
+                m_connection.Open();
+                m_existOneImgCmd.Parameters["@userID"].Value = userID;
+                m_existOneImgCmd.Parameters["@imgID"].Value = imgID;
+
+                int imgCount = (int)m_existOneImgCmd.ExecuteScalar();
+
+                if (imgCount == 1)
+                {
+                    success = true;
+                }
+            }
+            catch (SqlException ex)
+            {
+                success = false;
+            }
+            finally
+            {
+                m_connection.Close();
+            }
+
+            return success;
+        }
+        
     }
 }

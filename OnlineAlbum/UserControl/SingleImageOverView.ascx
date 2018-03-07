@@ -13,11 +13,15 @@
     }
 </style>
 <div class="OutlineSize">
+    <!--图片按钮，显示图片，并且当图片被点击的时候自动跳转到修改图像的页面。
+        但是，如果当前的登陆用户 不是 这个图片的拥有者的话，不会发生跳转。-->
     <asp:ImageButton ID="imageBtn" runat="server" Height ="150px" OnClick="imageBtn_Click"/>
     <div>
+        <!--显示图片名-->
         <asp:Label ID="imageName" runat="server" />
     </div>
     <div>
+        <!--显示所属的用户名，目前显示的是用户的ID，测试用-->
         <asp:Label ID="userNameLbl" runat="server" />
     </div>
 </div>

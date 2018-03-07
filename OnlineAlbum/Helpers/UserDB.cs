@@ -76,7 +76,7 @@ namespace OnlineAlbum.Helpers
 
         /*!
             \brief 检查数据库中是否已经含有同名用户
-            \param userID 注册用户时用到的用户ID
+            \param userID 用户ID
         */
         public bool AlreadyHave(string userID)
         {
@@ -87,9 +87,9 @@ namespace OnlineAlbum.Helpers
                 m_connection.Open();
                 m_searchCmd.Parameters["@userID"].Value = userID;
 
-                object returnedScalar = m_searchCmd.ExecuteScalar();
+                int userCount = (int)m_searchCmd.ExecuteScalar();
 
-                if (returnedScalar == null || returnedScalar.ToString() == "1")
+                if (userCount == 1)
                 {
                     success = true;
                 }
@@ -143,12 +143,11 @@ namespace OnlineAlbum.Helpers
         /*!
             \brief 获取某个用户的昵称
             \param userID 用户的唯一标识ID。
-            如果用户不存在将会抛出异常。
+            如果用户不存在将会返回null。
         */
         public string GetNickNameOf(string userID)
         {
-            string nickName = "";
-            bool success = false;
+            string nickName = null;
 
             try
             {
@@ -160,31 +159,19 @@ namespace OnlineAlbum.Helpers
                 if (searchResult.Read())
                 {
                     nickName = searchResult["USER_NAME"].ToString();
-                    success = true;
-                }
-                else
-                {
-                    success = false;
                 }
                 
             }
             catch (SqlException ex)
             {
-                success = false;
+                // 什么也不做，nickName为null
             }
             finally
             {
                 m_connection.Close();
             }
 
-            if (success)
-            {
-                return nickName;
-            }
-            else
-            {
-                throw new Exception("无法读取用户昵称");
-            }
+            return nickName;
         }
     }
 }

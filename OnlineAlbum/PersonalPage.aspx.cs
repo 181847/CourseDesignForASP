@@ -28,7 +28,7 @@ namespace OnlineAlbum
             {
                 throw new Exception("错误，尚未登陆任何用户，无法查看个人网页");
             }
-
+            
             ReadImages();
         }
 
@@ -37,12 +37,18 @@ namespace OnlineAlbum
         */
         protected void ReadImages()
         {
-            m_tempImgList = m_imgDB.GetOneUsersImgs(m_userID);
+            m_tempImgList = m_imgDB.GetOneUsersImgs(m_userID);  // 获取这个用户的所有图像
 
-            foreach ( var serverImg in m_tempImgList)
-            {
-                userImgPan.Controls.Add(serverImg.ToWebImage(Page));
-            }
+            //userSortedImgPan.SetImgs(m_tempImgList);
+
+            userImgPan.Controls.Clear();    // 清空现在userImgPan中的控件
+
+            // 创建新的标签分类控件。
+            ImageSortPanel newImgSortPanel = (ImageSortPanel)Page.LoadControl("~\\UserControl\\ImageSortPanel.ascx");
+
+            newImgSortPanel.SetImgs(m_tempImgList);     // 向分类面板添加所有图像
+
+            userImgPan.Controls.Add(newImgSortPanel);   // 将分类面板添加到userImgPan中
         }
 
         protected void UploadImgBtn_Click(object sender, EventArgs e)

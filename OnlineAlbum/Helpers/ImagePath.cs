@@ -7,41 +7,26 @@ using System.Web.UI.WebControls;
 
 namespace OnlineAlbum.Helpers
 {
+    /*!
+        \brief 工具类，包括一点和图像路径有关的操作以及数据。
+    */
     public class ImagePath
     {
-        public const int DEBUG_ADMIN_IMAGE_NUM = 6;
+        /*!
+            \brief 用于获取图片扩展名的正则表达式。 
+        */
         private const string GET_IMG_EXTEND_NAME_PATTERN = @"^.*(\.[a-zA-Z]{2,4})$";
+
+        /*!
+            \brief 图片的存储位置。 
+        */
         public const string IMAGE_STORAGE_PATH = "\\Images\\UserData\\";
 
         /*!
-            \brief 根据用户名和图片的ID生成对应图片的路径
-            \param userName 用户名
-            \param imageID 图片的ID，这个ID存储在数据库中用于唯一标识一个用户的一张布片。
+            \brief 获取图像的扩展名，带 点号，例如输入“img\user\00f3.jpg”返回“.jpg”
         */
-        public static string GeneratePath(string userName, string imageID)
-        {
-            return "~\\ImagePath\\userName\\imageID";
-        }
-
-        /*!
-            \brief 测试专用，使用预先存在的图片进行界面的测试
-            \param imageNum 测试使用的图像序号，序号从0开始，最多有DEBUG_ADMIN_IMAGE_NUM张。
-         */
-        public static string GenerateAdminPath(int imageNum)
-        {
-            // 检查序号的范围，序号从0开始。
-            if (imageNum < 0 || imageNum >= DEBUG_ADMIN_IMAGE_NUM)
-            {
-                // 错误的调试图像序号
-                throw new Exception("调试图像序号超出范围。");
-            }
-
-            return "~\\Images\\Administrator\\" + imageNum + ".jpg";
-        }
-
         public static string GetExtensionNameWithDot(string fullName)
         {
-            // 获取图片的扩展名。
             Match matchResult = Regex.Match(fullName, GET_IMG_EXTEND_NAME_PATTERN);
             return matchResult.Groups[1].Value;
         }

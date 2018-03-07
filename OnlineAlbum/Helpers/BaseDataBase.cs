@@ -12,7 +12,7 @@ namespace OnlineAlbum.Helpers
     public abstract class BaseDataBase
     {
         /*!
-            \brief 这个应用中用到的连接字符串时同一个
+            \brief 当前网站用到的数据库连接字符串，要改数据库的话，直接改这个字符串就可以了。
         */
         private const string m_connectString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=DBForASPCourseDesign;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
         protected SqlConnection m_connection;
@@ -28,7 +28,7 @@ namespace OnlineAlbum.Helpers
         }
 
         /*!
-            \brief 创建SqlCommand
+            \brief 创建SqlCommand，虚函数，由子类具体实现
         */
         abstract protected void BuildSqlCmds();
     }

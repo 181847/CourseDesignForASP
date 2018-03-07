@@ -114,6 +114,8 @@
     <Content Include="scripts\ai.0.22.9-build00167.js" />
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="UploadImage.aspx" />
+    <Content Include="UserControl\ImagePanel.ascx" />
+    <Content Include="UserControl\ImageSortPanel.ascx" />
     <Content Include="UserControl\SingleImageOverView.ascx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -133,9 +135,11 @@
       <DependentUpon>GlobalAlbum.aspx</DependentUpon>
     </Compile>
     <Compile Include="Helpers\BaseDataBase.cs" />
+    <Compile Include="Helpers\ImageTagDB.cs" />
     <Compile Include="Helpers\ServerImage.cs" />
     <Compile Include="Helpers\ImageDB.cs" />
     <Compile Include="Helpers\ImagePath.cs" />
+    <Compile Include="Helpers\ServerTag.cs" />
     <Compile Include="Helpers\TagDB.cs" />
     <Compile Include="Helpers\UserDB.cs" />
     <Compile Include="Login.aspx.cs">
@@ -166,6 +170,20 @@
     </Compile>
     <Compile Include="UploadImage.aspx.designer.cs">
       <DependentUpon>UploadImage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\ImagePanel.ascx.cs">
+      <DependentUpon>ImagePanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\ImagePanel.ascx.designer.cs">
+      <DependentUpon>ImagePanel.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\ImageSortPanel.ascx.cs">
+      <DependentUpon>ImageSortPanel.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\ImageSortPanel.ascx.designer.cs">
+      <DependentUpon>ImageSortPanel.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControl\SingleImageOverView.ascx.cs">
       <DependentUpon>SingleImageOverView.ascx</DependentUpon>
