@@ -15,6 +15,7 @@ namespace OnlineAlbum
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            userTitle.Text = "当前用户为:" + Session["userID"].ToString() + "/" + Session["userName"];
             // 读取并显示所有用户的图片。
             UpdateAllUsersImgs();
         }
@@ -38,6 +39,13 @@ namespace OnlineAlbum
         protected void goToPersonPageBtn_Click(object sender, EventArgs e)
         {
             Response.Redirect("~\\PersonalPage.aspx");
+        }
+
+        protected void logoutBtn_Click(object sender, EventArgs e)
+        {
+            Session["userID"] = null;
+            Session["userName"] = null;
+            Response.Redirect("~\\Login.aspx");
         }
     }
 }

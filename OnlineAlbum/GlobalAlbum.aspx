@@ -11,11 +11,20 @@
     <form id="form1" runat="server">
     <div>
         <p>欢迎光临本站</p>
-        <div>
-            <asp:Label ID="userTitle" runat="server" ></asp:Label>
-            <asp:Button ID="goToPersonPageBtn" runat="server" OnClick="goToPersonPageBtn_Click"/> 
-        </div>
-        <asp:Panel ID="allUserImgPan" runat="server" />
+        <table style="width:100%">
+            <tr>
+                <td>
+                    <asp:Label ID="userTitle" runat="server" style="float:left"></asp:Label>
+                    <asp:Button ID="goToPersonPageBtn" runat="server" Text="个人中心" OnClick="goToPersonPageBtn_Click" style="float:right"/> 
+                    <asp:Button ID="logoutBtn" runat="server" Text="退出登陆" OnClick="logoutBtn_Click" style="float:right"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <asp:Panel ID="allUserImgPan" runat="server" />
+                </td>
+            </tr>
+        </table>
     </div>
     </form>
 </body>
