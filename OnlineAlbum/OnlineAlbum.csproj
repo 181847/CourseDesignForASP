@@ -94,6 +94,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AlterImage.aspx" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -117,6 +118,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlterImage.aspx.cs">
+      <DependentUpon>AlterImage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AlterImage.aspx.designer.cs">
+      <DependentUpon>AlterImage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="GlobalAlbum.aspx.cs">
       <DependentUpon>GlobalAlbum.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -128,6 +136,7 @@
     <Compile Include="Helpers\ServerImage.cs" />
     <Compile Include="Helpers\ImageDB.cs" />
     <Compile Include="Helpers\ImagePath.cs" />
+    <Compile Include="Helpers\TagDB.cs" />
     <Compile Include="Helpers\UserDB.cs" />
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
