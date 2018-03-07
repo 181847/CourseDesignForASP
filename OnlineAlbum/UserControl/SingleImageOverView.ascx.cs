@@ -26,7 +26,7 @@ namespace OnlineAlbum.UserControl
             \brief 通过调用这个方法来显示设置这个图片模板的数据。
             \param showImg 被显示的图片信息，包括图片的ID、名称、所属用户。 
         */
-        public void Initialize(ServerImage showImg, Unit imgWidth, Unit imgHeight)
+        public void Initialize(ServerImage showImg)
         {
             m_serverImg = showImg;
             UpdateImg();
@@ -41,17 +41,15 @@ namespace OnlineAlbum.UserControl
             imageBtn.ImageUrl = m_serverImg.ToImageUrl();
             imageName.Text = m_serverImg.m_imgName;
             userNameLbl.Text = "ID:" + m_serverImg.m_userID;
-            
-            //System.Drawing.Image img = System.Drawing.Image.FromFile(Request.PhysicalApplicationPath + "Images\\UserData\\" + m_serverImg.m_imgID);
-            //if (img.Width > img.Height)
-            //{
-            //    imageBtn.Width = Unit.Percentage(100);
-            //}
-            //else
-            //{
-            //    imageBtn.Height = Unit.Percentage(100);
-            //}
+        }
 
+        protected void imageBtn_Click(object sender, ImageClickEventArgs e)
+        {
+            if (Session["userID"].ToString() == m_serverImg.m_userID)
+            {
+                Session["serverImg"] = m_serverImg;
+                Response.Redirect("~\\AlterImage.aspx");
+            }
         }
     }
 }

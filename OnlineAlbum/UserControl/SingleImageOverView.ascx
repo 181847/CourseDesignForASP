@@ -13,7 +13,7 @@
     }
 </style>
 <div class="OutlineSize">
-    <asp:ImageButton ID="imageBtn" runat="server" Height ="150px"/>
+    <asp:ImageButton ID="imageBtn" runat="server" Height ="150px" OnClick="imageBtn_Click"/>
     <div>
         <asp:Label ID="imageName" runat="server" />
     </div>
