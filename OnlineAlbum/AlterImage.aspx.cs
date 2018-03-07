@@ -28,7 +28,6 @@ namespace OnlineAlbum
                 userName.Text = Session["userName"].ToString();
 
                 imgPreview.ImageUrl = ImagePath.IMAGE_STORAGE_PATH + m_serverImg.m_imgID;
-                imgReplace.Visible = false;
 
                 UpdateImgTags();
             
@@ -87,11 +86,19 @@ namespace OnlineAlbum
             // 在图片ID后面添加扩展名
             newImgID += ImagePath.GetExtensionNameWithDot(replaceImgUpload.FileName);
 
-            // 检查数据库信息是否更新成功
+            // 检查图片数据库信息是否更新成功
             if (
                 m_imgDB.Delete(m_serverImg.m_imgID, m_serverImg.m_userID)       // 删除老信息
                 && m_imgDB.AddTo(newImgID, m_serverImg.m_userID, oldImgName))   // 添加新信息
             {
+                // 图片数据库更新成功。
+
+                // 将原有的标签信息迁移到新图片上。
+                var oldTagList = m_imgTagDB.GetTagsOf(m_serverImg.m_imgID, m_serverImg.m_userID);
+                foreach (var tag in oldTagList)
+                {
+                    m_imgTagDB.TagImg(newImgID, tag.m_tagID, m_serverImg.m_userID);
+                }
                 
                 // 删除之前的文件
                 File.Delete(Request.PhysicalApplicationPath + ImagePath.IMAGE_STORAGE_PATH + m_serverImg.m_imgID);

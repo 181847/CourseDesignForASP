@@ -26,14 +26,8 @@
                 </tr>
                 <tr>
                     <td>
-                        <span>
-                            <!--预览被修改的图像-->
-                            <asp:Image ID="imgPreview" runat="server" Height="150"/>
-                        </span>
-                        <span>
-                            <!--如果用户选择上传新图像，新图像会在这里显示出来-->
-                             <asp:Image ID="imgReplace" runat="server" Height="150"/>
-                        </span>
+                        <!--预览被修改的图像-->
+                        <asp:Image ID="imgPreview" runat="server" Height="150"/>
                     </td>
                 </tr>
                 <tr>
