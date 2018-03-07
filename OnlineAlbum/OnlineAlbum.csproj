@@ -99,6 +99,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="ReadMe.md" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -195,6 +196,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\Administrator\" />
+    <Folder Include="Images\ScreenShots\" />
     <Folder Include="Images\UserData\" />
   </ItemGroup>
   <PropertyGroup>
