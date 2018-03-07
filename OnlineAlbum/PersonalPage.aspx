@@ -12,10 +12,20 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <asp:Label ID="wellcomeUserLbl" runat="server" />
-        <asp:Panel ID="userImgPan" runat="server" CssClass="waterfall"/>
-        <asp:Button ID="goToMainPageBtn" runat="server" Text="转到主页" OnClick="goToMainPageBtn_Click"/>
-        <asp:Button ID="UploadImgBtn" runat="server" Text="上传新图像" OnClick="UploadImgBtn_Click"/>
+        <table>
+            <tr>
+                <td>
+                    <asp:Label ID="wellcomeUserLbl" runat="server" />
+                    <asp:Button ID="goToMainPageBtn" runat="server" Text="转到主页" OnClick="goToMainPageBtn_Click"/>
+                    <asp:Button ID="UploadImgBtn" runat="server" Text="上传新图像" OnClick="UploadImgBtn_Click"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <asp:Panel ID="userImgPan" runat="server"/>
+                </td>
+            </tr>
+        </table>
     </div>
     </form>
 </body>
