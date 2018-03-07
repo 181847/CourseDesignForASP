@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI.WebControls;
 
@@ -9,6 +10,8 @@ namespace OnlineAlbum.Helpers
     public class ImagePath
     {
         public const int DEBUG_ADMIN_IMAGE_NUM = 6;
+        private const string GET_IMG_EXTEND_NAME_PATTERN = @"^.*(\.[a-zA-Z]{2,4})$";
+        public const string IMAGE_STORAGE_PATH = "\\Images\\UserData\\";
 
         /*!
             \brief 根据用户名和图片的ID生成对应图片的路径
@@ -34,6 +37,13 @@ namespace OnlineAlbum.Helpers
             }
 
             return "~\\Images\\Administrator\\" + imageNum + ".jpg";
+        }
+
+        public static string GetExtensionNameWithDot(string fullName)
+        {
+            // 获取图片的扩展名。
+            Match matchResult = Regex.Match(fullName, GET_IMG_EXTEND_NAME_PATTERN);
+            return matchResult.Groups[1].Value;
         }
     }
 }
