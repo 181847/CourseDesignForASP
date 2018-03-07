@@ -11,8 +11,6 @@ namespace OnlineAlbum.Helpers
     public class ServerImage
     {
         public const string IMAGE_STORAGE_PATH = "~\\Images\\UserData\\";
-        public const double DEFAULT_WIDTH_PERCENTAGE = 100;
-        public const double DEFAULT_HEIGHT_PERCENTAGE = 100;
 
         public string m_imgID;
         public string m_imgName;
@@ -34,7 +32,7 @@ namespace OnlineAlbum.Helpers
             var newImgOverview = (SingleImageOverView)thePage.
                 LoadControl("~\\UserControl\\SingleImageOverView.ascx");
 
-            newImgOverview.Initialize(this, Unit.Percentage(DEFAULT_WIDTH_PERCENTAGE), Unit.Percentage(DEFAULT_HEIGHT_PERCENTAGE));
+            newImgOverview.Initialize(this);
 
             return newImgOverview;
         }
