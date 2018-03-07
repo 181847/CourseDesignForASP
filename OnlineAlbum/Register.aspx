@@ -28,6 +28,13 @@
                 </td>
             </tr>
             <tr>
+                <td>
+                    昵称：
+                </td>
+                <td>
+                    <asp:TextBox ID="nickNameText" runat="server"></asp:TextBox>
+            </tr>
+            <tr>
                 <td class="auto-style1">
                     密码：
                 </td>

@@ -52,9 +52,18 @@ namespace OnlineAlbum
         {
             if (Page.IsValid)
             {
-                if (m_userDB.Register(userNameText.Text, userNameText.Text, passwordText.Text))
+                string userID = userNameText.Text;
+                string userName = nickNameText.Text;
+                if (userName == "")
                 {
-                    Response.Write("注册成功<br>");
+                    userName = userID;
+                }
+                
+                if (m_userDB.Register(userID, userName, passwordText.Text))
+                {
+                    Session["userID"] = userID;
+                    Session["userName"] = userName;
+                    Response.Redirect("PersonalPage.aspx");
                 }
                 else
                 {
