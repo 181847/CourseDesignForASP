@@ -15,7 +15,6 @@ namespace OnlineAlbum
         protected string m_sUserID;
         protected string m_sUserName;
 
-        private const string GET_IMG_EXTEND_NAME_PATTERN = @"^.*(\.[a-zA-Z]{2,4})$";
 
         private const string SAVE_DIR = "\\Images\\UserData\\";
         private static string APP_PATH;
@@ -67,12 +66,8 @@ namespace OnlineAlbum
             }
             string newImgID   = m_imgDB.GenerateImgID();
 
-            // 获取图片的扩展名。
-            Match matchResult = Regex.Match(imgFileUploadBtn.FileName, GET_IMG_EXTEND_NAME_PATTERN);
-            string extendNameWithDot = matchResult.Groups[1].Value;
-
             // 在图片ID后面添加扩展名
-            newImgID += extendNameWithDot;
+            newImgID += ImagePath.GetExtensionNameWithDot(imgFileUploadBtn.FileName);
 
             if (m_imgDB.AddTo(newImgID, m_sUserID, oldImgName))
             {
