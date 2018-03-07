@@ -140,6 +140,8 @@ private const string m_connectString = @"Data Source=(localdb)\MSSQLLocalDB;Init
 
 上面1-3点完成之后自动跳转到**个人页面**，编辑标签则会保留在当前网页继续操作。
 
+![](Images/ScreenShots/alterImage.png)
+
 ---
 
 ## 嵌套页面布局
