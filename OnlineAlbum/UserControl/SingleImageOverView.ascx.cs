@@ -41,6 +41,7 @@ namespace OnlineAlbum.UserControl
             imageBtn.ImageUrl = ImagePath.IMAGE_STORAGE_PATH + m_serverImg.m_imgID;
             imageName.Text = m_serverImg.m_imgName;
             userNameLbl.Text = "ID:" + m_serverImg.m_userID;
+            uploadDTLbl.Text = "上传日期：" + m_serverImg.m_uploadDateTime;
         }
 
         protected void imageBtn_Click(object sender, ImageClickEventArgs e)

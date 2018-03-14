@@ -44,7 +44,7 @@
                 </td>
                 <td class="auto-style1">
                     <!--密码输入框-->
-                    <asp:TextBox ID="passwordText" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="passwordText" TextMode="Password" runat="server"></asp:TextBox>
                     <!--验证密码不为空-->
                     <asp:RequiredFieldValidator runat="server" ErrorMessage="密码必填" ForeColor="Red" ControlToValidate="passwordText" />
                     <!--确保密码符合正则表达式，“[a-zA-Z0-9]{6,12}”，即6至12为字母或数字-->
@@ -57,7 +57,7 @@
                 </td>
                 <td>
                     <!--确认密码框-->
-                    <asp:TextBox ID="confirmPasswordText" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="confirmPasswordText" TextMode="Password" runat="server"></asp:TextBox>
                     <!--验证控件，保证 密码框 和 确认密码框 的内容一样-->
                     <asp:CompareValidator ID="passwordEqualValidator" runat="server" Type="String" ControlToValidate="passwordText" ControlToCompare="confirmPasswordText" Operator="Equal" ErrorMessage="密码不一致" ForeColor="Red"/>
                 </td>

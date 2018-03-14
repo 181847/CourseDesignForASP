@@ -31,7 +31,7 @@
                 </td>
                 <td>
                     <!--密码输入框-->
-                    <asp:TextBox ID="passwordText" runat="server" />
+                    <asp:TextBox ID="passwordText" TextMode="Password" runat="server" />
                     <!--保证密码不为空-->
                     <asp:RequiredFieldValidator runat="server" ErrorMessage="密码必填" ForeColor="Red" ControlToValidate="passwordText" />
                     <!--用于显示密码错误的文本提示信息，这个地方我不想用CustomValidator，由代码直接控制这个标签的显示和隐藏-->

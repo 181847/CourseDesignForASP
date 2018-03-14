@@ -24,4 +24,8 @@
         <!--显示所属的用户名，目前显示的是用户的ID，测试用-->
         <asp:Label ID="userNameLbl" runat="server" />
     </div>
+    <div>
+        <!--显示图片的上传日期-->
+        <asp:Label ID="uploadDTLbl" runat="server" />
+    </div>
 </div>

@@ -20,6 +20,7 @@ namespace OnlineAlbum.Helpers
         public string m_imgID;
         public string m_imgName;
         public string m_userID;
+        public string m_uploadDateTime;
 
         /*!
             \brief 构造函数
@@ -27,11 +28,12 @@ namespace OnlineAlbum.Helpers
             \param name 图像名
             \param userID 用户ID 
         */
-        public ServerImage(string id, string name, string userID)
+        public ServerImage(string id, string name, string userID, string uploadDateTime)
         {
             m_imgID = id;
             m_imgName = name;
             m_userID = userID;
+            m_uploadDateTime = uploadDateTime;
         }
 
         /*!

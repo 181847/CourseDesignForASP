@@ -26,7 +26,7 @@ namespace OnlineAlbum.Helpers
 
         protected override void BuildSqlCmds()
         {
-            m_addCmd = new SqlCommand("INSERT INTO ImageTable VALUES (@imgID, @userID, @imgName)", m_connection);
+            m_addCmd = new SqlCommand("INSERT INTO ImageTable VALUES (@imgID, @userID, @imgName, GETDATE())", m_connection);
             m_addCmd.Parameters.Add("@imgID", SqlDbType.Char);
             m_addCmd.Parameters.Add("@userID", SqlDbType.Char);
             m_addCmd.Parameters.Add("@imgName", SqlDbType.NChar);
@@ -190,7 +190,8 @@ namespace OnlineAlbum.Helpers
                     imgList.Add(new ServerImage(
                         dr["IMG_ID"].ToString(), 
                         dr["IMG_NAME"].ToString(), 
-                        dr["USER_ID"].ToString()));
+                        dr["USER_ID"].ToString(),
+                        dr["UPLOAD_DATE_TIME"].ToString()));
                 }
 
                 dr.Close();
@@ -225,7 +226,8 @@ namespace OnlineAlbum.Helpers
                     imgList.Add(new ServerImage(
                         dr["IMG_ID"].ToString(),
                         dr["IMG_NAME"].ToString(),
-                        dr["USER_ID"].ToString()));
+                        dr["USER_ID"].ToString(),
+                        dr["UPLOAD_DATE_TIME"].ToString()));
                 }
 
                 dr.Close();
